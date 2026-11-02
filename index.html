@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kurd Agency Ads</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome بۆ ئایکۆنەکان -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;600;700&display=swap');
+        body { font-family: 'Noto Kufi Arabic', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .logo-bg { background-color: #163645; }
+        .text-kurd { color: #00a2e8; }
+        .bg-kurd { background-color: #00a2e8; }
+        /* Scrollbar styling */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+    </style>
+</head>
+<body class="overflow-hidden h-screen flex justify-center items-center">
+
+    <!-- بەشی خۆتۆمارکردن / چوونەژوورەوە -->
+    <div id="auth-screen" class="w-full h-full flex flex-col justify-center items-center logo-bg absolute z-50">
+        <div class="bg-slate-800 p-8 rounded-2xl shadow-2xl w-11/12 max-w-md border border-slate-700">
+            <div class="text-center mb-6">
+                <img src="kurd.jpg" alt="Kurd Agency Ads" class="w-32 h-32 mx-auto rounded-xl shadow-lg mb-4 object-cover">
+                <h2 class="text-2xl font-bold text-white">بەخێربێیت بۆ Kurd Agency Ads</h2>
+                <p class="text-slate-400 text-sm mt-2">هەژمارێکی نوێ دروست بکە یان بڕۆ ژوورەوە</p>
+            </div>
+
+            <form id="register-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm text-slate-300 mb-1">ناوی تەواو</label>
+                    <input type="text" required class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm text-slate-300 mb-1">ئیمەیڵ</label>
+                    <input type="email" required class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm text-slate-300 mb-1">ژمارە مۆبایل</label>
+                    <input type="tel" required class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm text-slate-300 mb-1">یوزەرنەیم (تایبەت بە خۆت)</label>
+                    <input type="text" id="username-input" required class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500" placeholder="Kurd_Agency_123">
+                    <p class="text-xs text-red-400 mt-1 hidden" id="user-error">ئەم یوزەرنەیمە پێشتر گیراوە!</p>
+                </div>
+                <button type="submit" class="w-full bg-kurd hover:bg-blue-600 text-white font-bold py-3 rounded-lg transition-all duration-300 shadow-[0_0_15px_rgba(0,162,232,0.4)]">
+                    دروستکردنی هەژمار
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- داشبۆردی سەرەکی (پاش چوونەژوورەوە دەردەکەوێت) -->
+    <div id="main-app" class="hidden w-full h-full flex bg-slate-900">
+        
+        <!-- لای ڕاست (Sidebar) -->
+        <aside class="w-64 bg-slate-800 border-l border-slate-700 flex flex-col">
+            <div class="p-4 border-b border-slate-700 flex items-center gap-3">
+                <img src="kurd.jpg" alt="Logo" class="w-10 h-10 rounded-md">
+                <h1 class="text-lg font-bold text-white tracking-wide">Kurd Agency</h1>
+            </div>
+            
+            <nav class="flex-1 p-4 space-y-2">
+                <button onclick="switchTab('dashboard')" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white transition-all active-tab" data-target="dashboard">
+                    <i class="fa-solid fa-chart-pie"></i> داشبۆردی گشتی
+                </button>
+                <button onclick="switchTab('meta')" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-blue-900/50 hover:text-blue-400 transition-all" data-target="meta">
+                    <i class="fa-brands fa-meta"></i> Meta Ads (FB/IG)
+                </button>
+                <button onclick="switchTab('tiktok')" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-cyan-400 transition-all" data-target="tiktok">
+                    <i class="fa-brands fa-tiktok"></i> TikTok Ads
+                </button>
+                <button onclick="switchTab('snapchat')" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-yellow-900/30 hover:text-yellow-400 transition-all" data-target="snapchat">
+                    <i class="fa-brands fa-snapchat"></i> Snapchat Ads
+                </button>
+                <div class="my-4 border-t border-slate-700"></div>
+                <button onclick="switchTab('wallet')" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-emerald-900/40 hover:text-emerald-400 transition-all bg-emerald-900/20 text-emerald-400 font-bold border border-emerald-800/50" data-target="wallet">
+                    <i class="fa-solid fa-wallet"></i> جزدان و پارەدان
+                </button>
+            </nav>
+
+            <div class="p-4 border-t border-slate-700">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-slate-700 rounded-full flex justify-center items-center text-white"><i class="fa-solid fa-user"></i></div>
+                    <div>
+                        <p class="text-sm font-bold" id="display-user">ناوی بەکارهێنەر</p>
+                        <p class="text-xs text-emerald-400 font-mono">باڵانس: $1,250.00</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ناوەڕاست (Content Area) -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden">
+            <!-- Header -->
+            <header class="h-16 bg-slate-800 border-b border-slate-700 flex items-center justify-between px-6">
+                <h2 id="page-title" class="text-xl font-bold text-white">داشبۆردی گشتی</h2>
+                <button class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> دروستکردنی کەمپەین
+                </button>
+            </header>
+
+            <!-- ناوەڕۆکی بەشەکان -->
+            <div class="flex-1 overflow-y-auto p-6">
+                
+                <!-- Dashboard Section -->
+                <div id="tab-dashboard" class="content-section space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
+                            <p class="text-slate-400 text-sm">کۆی خەرجی مانگ</p>
+                            <p class="text-2xl font-bold mt-2">$3,450.00</p>
+                        </div>
+                        <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
+                            <p class="text-slate-400 text-sm">بینراو (Impressions)</p>
+                            <p class="text-2xl font-bold mt-2">1,240,000</p>
+                        </div>
+                        <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
+                            <p class="text-slate-400 text-sm">کرتەکان (Clicks)</p>
+                            <p class="text-2xl font-bold mt-2">45,200</p>
+                        </div>
+                        <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
+                            <p class="text-slate-400 text-sm">تێچووی نامە (Cost Per Message)</p>
+                            <p class="text-2xl font-bold mt-2 text-emerald-400">$0.12</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Meta Ads Section (Ads Manager Style) -->
+                <div id="tab-meta" class="content-section hidden">
+                    <div class="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+                        <div class="flex border-b border-slate-700">
+                            <button class="px-6 py-3 text-sm font-bold border-b-2 border-blue-500 text-blue-400">Campaigns</button>
+                            <button class="px-6 py-3 text-sm text-slate-400 hover:text-slate-200">Ad Sets</button>
+                            <button class="px-6 py-3 text-sm text-slate-400 hover:text-slate-200">Ads</button>
+                        </div>
+                        <table class="w-full text-right text-sm">
+                            <thead class="bg-slate-900/50 text-slate-400 border-b border-slate-700">
+                                <tr>
+                                    <th class="py-3 px-4 text-center w-10"><input type="checkbox"></th>
+                                    <th class="py-3 px-4">ناوی کەمپەین</th>
+                                    <th class="py-3 px-4">دۆخ</th>
+                                    <th class="py-3 px-4">بڕی تەرخانکراو</th>
+                                    <th class="py-3 px-4">ئەنجام (پەیام)</th>
+                                    <th class="py-3 px-4">کۆی خەرجی</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-200">
+                                <tr class="border-b border-slate-700 hover:bg-slate-700/50 transition-colors">
+                                    <td class="py-3 px-4 text-center"><input type="checkbox"></td>
+                                    <td class="py-3 px-4 text-blue-400 cursor-pointer">کەمپەینی جلوبەرگ - ئینستاگرام</td>
+                                    <td class="py-3 px-4"><span class="bg-emerald-900/50 text-emerald-400 px-2 py-1 rounded-full text-xs">Active</span></td>
+                                    <td class="py-3 px-4">$20 ڕۆژانە</td>
+                                    <td class="py-3 px-4">120</td>
+                                    <td class="py-3 px-4">$180.50</td>
+                                </tr>
+                                <tr class="border-b border-slate-700 hover:bg-slate-700/50 transition-colors">
+                                    <td class="py-3 px-4 text-center"><input type="checkbox"></td>
+                                    <td class="py-3 px-4 text-blue-400 cursor-pointer">کەمپەینی ڕیەڵ ستەیت</td>
+                                    <td class="py-3 px-4"><span class="bg-slate-700 text-slate-400 px-2 py-1 rounded-full text-xs">Off</span></td>
+                                    <td class="py-3 px-4">$50 ڕۆژانە</td>
+                                    <td class="py-3 px-4">45 Leads</td>
+                                    <td class="py-3 px-4">$450.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TikTok Ads Section -->
+                <div id="tab-tiktok" class="content-section hidden">
+                    <div class="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+                         <div class="flex border-b border-slate-700 bg-black/20">
+                            <button class="px-6 py-3 text-sm font-bold border-b-2 border-cyan-400 text-cyan-400">Campaigns</button>
+                            <button class="px-6 py-3 text-sm text-slate-400 hover:text-slate-200">Ad Groups</button>
+                            <button class="px-6 py-3 text-sm text-slate-400 hover:text-slate-200">Ads</button>
+                        </div>
+                        <!-- TikTok specific styling table -->
+                        <table class="w-full text-right text-sm">
+                            <thead class="bg-slate-900/50 text-slate-400 border-b border-slate-700">
+                                <tr>
+                                    <th class="py-3 px-4">ناوی کەمپەین (تیکتۆک)</th>
+                                    <th class="py-3 px-4">دۆخ</th>
+                                    <th class="py-3 px-4">CPA</th>
+                                    <th class="py-3 px-4">Conversions</th>
+                                    <th class="py-3 px-4">خەرجی</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-200">
+                                <tr class="border-b border-slate-700 hover:bg-slate-700/50">
+                                    <td class="py-3 px-4 font-bold">فرۆشتنی ئامێری گەیمینگ</td>
+                                    <td class="py-3 px-4"><span class="text-emerald-400"><i class="fa-solid fa-circle text-[8px] ml-1"></i> Delivering</span></td>
+                                    <td class="py-3 px-4">$1.20</td>
+                                    <td class="py-3 px-4">85</td>
+                                    <td class="py-3 px-4">$102.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Snapchat Ads Section -->
+                <div id="tab-snapchat" class="content-section hidden">
+                     <div class="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+                        <div class="flex border-b border-slate-700 bg-yellow-900/10">
+                            <button class="px-6 py-3 text-sm font-bold border-b-2 border-yellow-400 text-yellow-400">Campaigns</button>
+                            <button class="px-6 py-3 text-sm text-slate-400 hover:text-slate-200">Ad Sets</button>
+                        </div>
+                        <div class="p-8 text-center text-slate-400">
+                            <i class="fa-brands fa-snapchat text-4xl text-yellow-400 mb-3"></i>
+                            <p>هیچ کەمپەینێکی سناپچات بوونی نییە. ئێستا یەکەم کەمپەینت دروست بکە.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wallet / Payment Section -->
+                <div id="tab-wallet" class="content-section hidden max-w-4xl mx-auto">
+                    <div class="bg-slate-800 rounded-2xl border border-slate-700 p-8 shadow-2xl">
+                        <div class="flex justify-between items-center mb-8 border-b border-slate-700 pb-6">
+                            <div>
+                                <h3 class="text-2xl font-bold text-white">باڵانسی هەژمارەکەت</h3>
+                                <p class="text-slate-400 text-sm mt-1">لە ڕێگەی ئەم وەسیلانەوە دەتوانیت باڵانس زیاد بکەیت</p>
+                            </div>
+                            <div class="text-left">
+                                <span class="block text-sm text-slate-400">کۆی باڵانس</span>
+                                <span class="text-4xl font-mono text-emerald-400 font-bold">$1,250.00</span>
+                            </div>
+                        </div>
+
+                        <h4 class="text-lg font-bold text-white mb-4">هەڵبژاردنی ڕێگای پارەدان:</h4>
+                        
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                            <!-- FastPay -->
+                            <button class="border-2 border-slate-600 rounded-xl p-4 flex flex-col items-center justify-center hover:border-blue-400 bg-slate-700/30 hover:bg-slate-700 transition-all focus:border-blue-500 focus:bg-slate-700">
+                                <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xl mb-2">F</div>
+                                <span class="font-bold">FastPay</span>
+                            </button>
+                            <!-- FIB -->
+                            <button class="border-2 border-slate-600 rounded-xl p-4 flex flex-col items-center justify-center hover:border-purple-400 bg-slate-700/30 hover:bg-slate-700 transition-all focus:border-purple-500">
+                                <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl mb-2">FIB</div>
+                                <span class="font-bold">First Iraqi Bank</span>
+                            </button>
+                            <!-- AsiaPay -->
+                            <button class="border-2 border-slate-600 rounded-xl p-4 flex flex-col items-center justify-center hover:border-red-500 bg-slate-700/30 hover:bg-slate-700 transition-all focus:border-red-500">
+                                <div class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-xl mb-2">A</div>
+                                <span class="font-bold">AsiaPay</span>
+                            </button>
+                            <!-- SuperQ -->
+                            <button class="border-2 border-slate-600 rounded-xl p-4 flex flex-col items-center justify-center hover:border-yellow-500 bg-slate-700/30 hover:bg-slate-700 transition-all focus:border-yellow-500">
+                                <div class="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold text-xl mb-2 text-black">SQ</div>
+                                <span class="font-bold">SuperQ</span>
+                            </button>
+                        </div>
+
+                        <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                            <label class="block text-sm text-slate-300 mb-2">بڕی پارە بە دۆلار ($)</label>
+                            <div class="flex gap-4">
+                                <input type="number" placeholder="نموونە: 100" class="flex-1 bg-slate-800 border border-slate-600 rounded-lg px-4 py-3 text-white text-xl focus:outline-none focus:border-emerald-500">
+                                <button class="bg-emerald-600 hover:bg-emerald-500 px-8 py-3 rounded-lg font-bold text-white transition-colors">
+                                    پارەدان و زیادکردن
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- تەنها سکرێپتێکی کورت بۆ گۆڕینی بەشەکان و چوونەژوورەوە -->
+    <script>
+        // سیستەمی چوونەژوورەوە
+        document.getElementById('register-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username-input').value;
+            
+            // نموونەی پشکنینی یوزەرنەیم (لە ڕاستیدا ئەمە بە باک-ئێند دەکرێت)
+            if(username.toLowerCase() === 'admin' || username.toLowerCase() === 'kurd') {
+                document.getElementById('user-error').classList.remove('hidden');
+                return;
+            }
+            
+            document.getElementById('display-user').innerText = '@' + username;
+            document.getElementById('auth-screen').classList.add('hidden');
+            document.getElementById('main-app').classList.remove('hidden');
+        });
+
+        // سیستەمی گۆڕینی تابی سۆشیاڵ میدیاکان
+        function switchTab(tabId) {
+            // شاردنەوەی هەموو بەشەکان
+            document.querySelectorAll('.content-section').forEach(el => el.classList.add('hidden'));
+            
+            // دەرخستنی ئەو بەشەی کلیکی لەسەر کراوە
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            
+            // گۆڕینی ناونیشانی سەرەوە
+            const titles = {
+                'dashboard': 'داشبۆردی گشتی',
+                'meta': 'Meta Ads Manager (Facebook & Instagram)',
+                'tiktok': 'TikTok Ads Manager',
+                'snapchat': 'Snapchat Ads Manager',
+                'wallet': 'جزدان و پڕکردنەوەی باڵانس'
+            };
+            document.getElementById('page-title').innerText = titles[tabId];
+            
+            // سڕینەوەی ڕەنگی چالاک لە هەموو دوگمەکان
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-slate-700', 'text-white', 'border-l-4', 'border-blue-500');
+            });
+            
+            // زیادکردنی ڕەنگی چالاک بۆ دوگمەی دیاریکراو
+            const activeBtn = document.querySelector(`[data-target="${tabId}"]`);
+            if(tabId !== 'wallet') {
+                activeBtn.classList.add('bg-slate-700', 'text-white', 'border-l-4', 'border-blue-500');
+            }
+        }
+    </script>
+</body>
+</html>
